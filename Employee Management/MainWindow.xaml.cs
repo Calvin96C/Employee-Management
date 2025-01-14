@@ -1,5 +1,10 @@
-﻿using Employee_Management.ViewModel;
+﻿using Dapper;
+using Employee_Management.Model;
+using Employee_Management.UserControls;
+using Employee_Management.ViewModel;
 using System.Configuration;
+using System.Data;
+using System.Data.SQLite;
 using System.Windows;
 using System.Windows.Input;
 
@@ -12,41 +17,29 @@ namespace Employee_Management
     {
         private string _connectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
 
-        //private ObservableCollection<Position> _positions;
-
-        //public ObservableCollection<Position> Positions
-        //{
-        //    get { return _positions; }
-        //    set { _positions = value; }
-        //}
-
+        private readonly PositionPage _positionPage = new PositionPage();
 
         public MainWindow()
         {
-            //DataContext = this;
-            //_positions = new ObservableCollection<Position>();
             InitializeComponent();
-            MainWindowVM vm = new MainWindowVM();
-            DataContext = vm;
+            MainContent.Content = _positionPage;
+            //showPositions();
         }
 
-        //private void showPositions()
-        //{
-        //    string sql_query = "Select * from positions";
+        private void showPositions()
+        {
+            string sql_query = "SELECT position_id AS PositionID, position_description AS PositionDescription FROM positions";
 
-        //    using (IDbConnection connection = new SQLiteConnection(_connectionString))
-        //    {
-        //        List<Position> positions = connection.Query<Position>(sql_query).ToList();
-                
-        //        //foreach (Position position in positions)
-        //        //{
-        //        //    MessageBox.Show($"ID : {position.Position_ID} \nPosition: {position.Position_description}");
-        //        //}
+            using (IDbConnection connection = new SQLiteConnection(_connectionString))
+            {
+                List<Position> positionList = connection.Query<Position>(sql_query).ToList();
 
-                
-        //        //MessageBox.Show("Positions loaded");
-        //    }
-        //}
+                foreach (Position position in positionList)
+                {
+                    MessageBox.Show($"id : {position.PositionID} \nposition: {position.PositionDescription}");
+                }
+            }
+        }
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {

@@ -1,24 +1,50 @@
-﻿using System.Reflection.Metadata;
+﻿using System.ComponentModel;
+using System.Reflection.Metadata;
 
 namespace Employee_Management.Model
 {
     /// <summary>
     /// Defines the positions available for employees
     /// </summary>
-    public class Position
+    public class Position : INotifyPropertyChanged
     {
-        public int Position_ID { get; init; }
-        public string? Position_description { get; set; }
+        private int _positionID;
+        private string? _positionDescription;
 
+        public int PositionID 
+        { 
+            get => _positionID;
+            set
+            {
+                _positionID = value;
+                OnPropertyChanged(nameof(PositionID));
+            }
+        }
+        public string? PositionDescription 
+        { 
+            get => _positionDescription; 
+            set
+            {
+                _positionDescription = value;
+                OnPropertyChanged(nameof(PositionDescription));
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+        
         //Default constructor for Dapper, no parameters
         public Position(){}
 
-        public Position(string position_description)
+        public Position(int position_ID, string position_description)
         {
-            //this.Position_ID = position_ID;
-            this.Position_description = position_description;
+            this.PositionID = position_ID;
+            this.PositionDescription = position_description;
         }
-
-        
     }
 }
