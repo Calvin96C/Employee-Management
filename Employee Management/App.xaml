@@ -4,7 +4,10 @@
              xmlns:local="clr-namespace:Employee_Management"
              StartupUri="MainWindow.xaml"><!--view/Window1.xaml-->
     <Application.Resources>
-
-
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Templates.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

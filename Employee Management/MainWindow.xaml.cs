@@ -50,5 +50,22 @@ namespace Employee_Management
         {
             MessageBox.Show("Button has been pressed.");
         }
+
+        private void MaxBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (WindowState == WindowState.Normal)
+            {
+                WindowState = WindowState.Maximized;
+            }
+            else if(WindowState == WindowState.Maximized)
+            {
+                WindowState= WindowState.Normal;
+            }
+        }
+
+        private void CloseBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
     }
 }
