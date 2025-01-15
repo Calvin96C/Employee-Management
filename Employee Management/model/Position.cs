@@ -14,10 +14,10 @@ namespace Employee_Management.Model
         public int PositionID 
         { 
             get => _positionID;
-            set
+            private set
             {
                 _positionID = value;
-                OnPropertyChanged(nameof(PositionID));
+                //OnPropertyChanged(nameof(PositionID));
             }
         }
         public string? PositionDescription 

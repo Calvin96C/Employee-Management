@@ -7,21 +7,39 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
+    
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
-            <TextBox x:Name="tbDescription" Width="200" VerticalContentAlignment="Center"
-                     Text="{Binding TbText}"><!--Text="{Binding SelectedPosition.PositionDescription}"-->
+            <TextBox x:Name="tbDescription"
+                     Text="{Binding TbText}"
+                     Width="200" FontSize="16"
+                     VerticalContentAlignment="Center">
             </TextBox>
-            <Button x:Name="btnSave" Content="Save" Width="80" Margin="10,0,0,0" Command="{Binding SaveCommand}"></Button>
+            <Button Content="Update" 
+                    Width="80" Margin="10,0,0,0"
+                    Command="{Binding UpdateCommand}"
+                    Style="{StaticResource DefaultButtonStyle}">
+            </Button>
+            <Button Content="Add" 
+                    Width="80" Margin="10,0,0,0"
+                    Command="{Binding SaveCommand}"
+                    Style="{StaticResource DefaultButtonStyle}">
+            </Button>
+            <Button Content="Delete"
+                    Width="80" Margin="10,0,0,0"
+                    Command="{Binding SaveCommand}"
+                    Style="{StaticResource DefaultButtonStyle}">
+            </Button>
+            
         </StackPanel>
         
         <DataGrid Grid.Row="1" x:Name="DataGrid" Margin="0,10,0,0" AutoGenerateColumns="False" IsReadOnly="False" 
                   ItemsSource="{Binding Positions}"
-                  SelectedItem="{Binding SelectedPosition}">
+                  SelectedItem="{Binding SelectedPosition}" FontSize="16">
             <DataGrid.Columns>  
                 <DataGridTextColumn Header="ID" Binding="{Binding PositionID}" IsReadOnly="True"></DataGridTextColumn>
                 <!--<DataGridTextColumn Header="Position Name" Binding="{Binding PositionDescription, UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>-->
