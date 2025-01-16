@@ -1,11 +1,13 @@
 ﻿using Dapper;
 using Employee_Management.Model;
 using Employee_Management.UserControls;
+using Employee_Management.Utils;
 using Employee_Management.ViewModel;
 using System.Configuration;
 using System.Data;
 using System.Data.SQLite;
 using System.Windows;
+using System.Windows.Documents.DocumentStructures;
 using System.Windows.Input;
 
 namespace Employee_Management
@@ -24,6 +26,9 @@ namespace Employee_Management
             InitializeComponent();
             MainContent.Content = _positionPage;
             //showPositions();
+            //SQLiteUtil.TableStructure tblStruct = SQLiteUtil.GetTableStructure("employees");
+            //SQLiteUtil.TableStructure tableStructure = new SQLiteUtil.TableStructure("employees");
+            //MessageBox.Show($"{tableStructure.Columns.Count}");
         }
 
         private void showPositions()

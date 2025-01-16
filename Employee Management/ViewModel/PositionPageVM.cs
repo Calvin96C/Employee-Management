@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Employee_Management.Model;
 using Employee_Management.MVVM;
+using Employee_Management.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Documents.DocumentStructures;
 using System.Windows.Input;
 
 namespace Employee_Management.ViewModel
@@ -24,6 +26,7 @@ namespace Employee_Management.ViewModel
         private string _connectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
         private Position? _selectedPosition;
         private string _tbText;
+        private SQLiteUtil.TableStructure _tableStructure;
         #endregion
 
         #region Properties
@@ -65,6 +68,7 @@ namespace Employee_Management.ViewModel
         #region Constructor
         public PositionPageVM()
         {
+            _tableStructure = new SQLiteUtil.TableStructure("positions");
             LoadData();
         }
         #endregion
@@ -72,19 +76,24 @@ namespace Employee_Management.ViewModel
         #region Methods
         private void LoadData()
         {
-            using (IDbConnection con = new SQLiteConnection(_connectionString))
-            {
-                string sqlQuery = "SELECT position_id AS PositionID, position_description AS PositionDescription FROM positions";
-                List<Position> positions = con.Query<Position>(sqlQuery).ToList();
-                Positions = new ObservableCollection<Position>(positions);
-            }
+            string sqlQuery = "SELECT position_id AS PositionID, position_description AS PositionDescription FROM positions";
+            List<Position> positions = SQLiteUtil.ReadData<Position>(sqlQuery);
+            Positions = new ObservableCollection<Position>(positions);
         }
         private void UpdateEntry()
         {
             if (SelectedPosition != null)
             {
-                //SelectedPosition.PositionDescription = TbText;
-                using (IDbConnection con = new SQLiteConnection(_connectionString))
+                try
+                {
+                    SQLiteUtil.UpdateEntry(_tableStructure, "position_description", TbText, new string[] { SelectedPosition.PositionID.ToString() });
+                    SelectedPosition.PositionDescription = TbText;
+                }
+                finally
+                {
+
+                }
+                /*using (IDbConnection con = new SQLiteConnection(_connectionString))
                 {
                     try
                     {
@@ -95,13 +104,13 @@ namespace Employee_Management.ViewModel
                     catch (SQLiteException ex)
                     {
                         // Handle specific SQLite database errors
-                        switch (ex.ErrorCode)
+                        switch ((SQLiteErrorCode)ex.ErrorCode)
                         {
-                            case (int)SQLiteErrorCode.Constraint:
+                            case SQLiteErrorCode.Constraint:
                                 MessageBox.Show("A database constraint was violated. Ensure all required fields are filled.",
                                                 "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
                                 break;
-                            case (int)SQLiteErrorCode.Locked:
+                            case SQLiteErrorCode.Locked:
                                 MessageBox.Show("The database is currently locked. Please try again later.",
                                                 "Database Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                                 break;
@@ -117,7 +126,7 @@ namespace Employee_Management.ViewModel
                         MessageBox.Show($"An unexpected error occurred: {ex.Message}",
                                         "Application Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
-                }
+                }*/
             }
         }
         #endregion
