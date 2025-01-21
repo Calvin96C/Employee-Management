@@ -17,9 +17,9 @@ namespace Employee_Management.Utils
         private static string _connectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
         internal class TableStructure
         {
-            public string? TableName { get;private set; }
-            public List<ColumnInfo> Columns { get;private set; } = new List<ColumnInfo>();
-            public List<ForeignKeyInfo> ForeignKeys { get;private set; } = new List<ForeignKeyInfo>();
+            public string? TableName { get; private set; }
+            public List<ColumnInfo> Columns { get; private set; } = new List<ColumnInfo>();
+            public List<ForeignKeyInfo> ForeignKeys { get; private set; } = new List<ForeignKeyInfo>();
 
             public TableStructure(string tableName)
             {
@@ -154,116 +154,29 @@ namespace Employee_Management.Utils
                 return new List<T>();
             }
         }
-    
-        internal static void UpdateEntry(TableStructure tableStructure, string colName,string updateValue ,string[] idArray)
+
+        internal static bool UpdateEntry(string sqlQuery, object? parameters = null)
         {
-            string sqlQuery = $"UPDATE {tableStructure.TableName} SET {colName} = @Value WHERE ";
-
-            /*
-            if (idArray.Length == 1)
+            using (IDbConnection con = new SQLiteConnection(_connectionString))
             {
-                foreach (ColumnInfo col in tableStructure.Columns)
+                try
                 {
-                    if (col.IsPrimaryKey)
+                    if (con.Execute(sqlQuery, parameters) > 0)
                     {
-                        sqlQuery = sqlQuery + col.Name + " = @ID";
-                        break;
+                        return true;
                     }
                 }
-
-                using (IDbConnection con = new SQLiteConnection(_connectionString))
+                catch (SQLiteException ex)
                 {
-                    con.Execute(sqlQuery, new {Value = updateValue, ID = idArray[0]});
+                    SQLiteExceptionUtil.ExceptionHandler(ex);
                 }
+                catch (Exception ex)
+                {
+                    GeneralExceptionUtil.ExceptionHandler(ex);
+                }
+
+                return false;
             }
-            else if (idArray.Length >= 1)
-            {
-                int idIndex = 0;
-
-                foreach (ColumnInfo col in tableStructure.Columns)
-                {
-                    if (col.IsPrimaryKey)
-                    {
-                        if (idIndex == 0)
-                        {
-                            sqlQuery = sqlQuery + col.Name + " = @ID";
-                            idIndex++;
-                        }
-                        else if (idIndex == idArray.Length-1)
-                        {
-                            sqlQuery = sqlQuery + col.Name + " = @ID";
-                        }
-                        else
-                        {
-                            sqlQuery = sqlQuery + col.Name + " = @ID AND";
-                            idIndex++;
-                        }
-                    }
-                }
-            }
-            */
-
-            int pkCount = 0;
-            //var pkList = new Dictionary<string, int>();
-            List<string> pkList = new List<string>();
-            var parameters = new object();
-
-            foreach (var col in tableStructure.Columns)
-            {
-                if (col.IsPrimaryKey)
-                {
-                    //pkList[colName] = pkCount;
-                    pkList.Add(col.Name);
-                    pkCount++;
-                }
-            }
-
-            if (pkCount == idArray.Length)
-            {
-                // If there is only one primary key
-                if (pkCount == 1)
-                {
-                    sqlQuery += pkList[0] + " = @ID";
-                    parameters = new { Value = updateValue, ID = idArray[0] };
-                }
-                // If there are multiple primary keyes
-                else if (pkCount >= 1)
-                {
-                    /*var pkConditions = new List<string>();
-                    var pkParameters = new List<object>();
-
-                    for (int i = 0; i < pkList.Count; i++)
-                    {
-                        var pkName = pkList.Keys.ElementAt(i);
-                        pkConditions.Add($"{pkName} = @PK{i}");
-                        pkParameters.Add(idArray[i]);
-                    }
-
-                    sqlQuery += string.Join(" AND ", pkConditions);
-                    parameters = new { Value = updateValue, PK = pkParameters.ToArray() };*/
-                }
-                using (IDbConnection con = new SQLiteConnection(_connectionString))
-                {
-                    try
-                    {
-                        con.Execute(sqlQuery, parameters);
-                    }
-                    catch (SQLiteException ex)
-                    {
-                        SQLiteExceptionUtil.ExceptionHandler(ex);
-                    }
-                    catch (Exception ex)
-                    {
-                        GeneralExceptionUtil.ExceptionHandler(ex);
-                    }
-                }
-            }
-            else
-            {
-                throw new ArgumentException("The number of IDs provided does not match the number of primary keys.");
-            }
-
         }
-    
     }
 }

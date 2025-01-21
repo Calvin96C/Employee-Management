@@ -82,51 +82,19 @@ namespace Employee_Management.ViewModel
         }
         private void UpdateEntry()
         {
-            if (SelectedPosition != null)
+            if (SelectedPosition != null && string.IsNullOrEmpty(TbText) == false)
             {
-                try
+                string sqlQuery = "UPDATE positions SET position_description = @Value WHERE position_ID = @ID";
+                object parameters = new {Value = TbText, ID = SelectedPosition.PositionID };
+                if (SQLiteUtil.UpdateEntry(sqlQuery, parameters))
                 {
-                    SQLiteUtil.UpdateEntry(_tableStructure, "position_description", TbText, new string[] { SelectedPosition.PositionID.ToString() });
+                    MessageBox.Show("Entry updated.");
                     SelectedPosition.PositionDescription = TbText;
                 }
-                finally
+                else
                 {
-
+                    MessageBox.Show("Update failed.");
                 }
-                /*using (IDbConnection con = new SQLiteConnection(_connectionString))
-                {
-                    try
-                    {
-                        string sqlQuery = "UPDATE positions SET position_description = @Description WHERE position_ID = @ID";
-                        con.Execute(sqlQuery, new {Description = TbText, ID = SelectedPosition.PositionID});
-                        SelectedPosition.PositionDescription = TbText;
-                    }
-                    catch (SQLiteException ex)
-                    {
-                        // Handle specific SQLite database errors
-                        switch ((SQLiteErrorCode)ex.ErrorCode)
-                        {
-                            case SQLiteErrorCode.Constraint:
-                                MessageBox.Show("A database constraint was violated. Ensure all required fields are filled.",
-                                                "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                                break;
-                            case SQLiteErrorCode.Locked:
-                                MessageBox.Show("The database is currently locked. Please try again later.",
-                                                "Database Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                                break;
-                            default:
-                                MessageBox.Show($"An unexpected database error occurred: {ex.Message}",
-                                                "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                                break;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        // Handle other types of general errors
-                        MessageBox.Show($"An unexpected error occurred: {ex.Message}",
-                                        "Application Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }*/
             }
         }
         #endregion
