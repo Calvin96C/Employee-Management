@@ -31,7 +31,6 @@ namespace Employee_Management.ViewModel
         #endregion
 
         #region Properties
-        public ObservableCollection<IValidationRule> ValidationRules { get; set; }
         public string? TbText
                 {
                     get { return _tbText; }
@@ -71,7 +70,6 @@ namespace Employee_Management.ViewModel
         public PositionPageVM()
         {
             _tableStructure = new SQLiteUtil.TableStructure("positions");
-
             LoadData();
         }
         #endregion

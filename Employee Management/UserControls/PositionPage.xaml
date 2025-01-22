@@ -30,7 +30,8 @@
                 <TextBox.Text>
                     <Binding Path="TbText" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
-                            <validation:AgeRangeRule Min="5" Max="15"/>
+                            <!--<validation:AgeRangeRule Min="5" Max="15"/>-->
+                            <validation:EmptyTextRule CheckWhiteSpace="True"/>
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
