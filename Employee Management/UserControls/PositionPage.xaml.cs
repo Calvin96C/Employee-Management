@@ -1,7 +1,9 @@
 ﻿using Employee_Management.Model;
+using Employee_Management.Validations;
 using Employee_Management.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +29,16 @@ namespace Employee_Management.UserControls
             InitializeComponent();
             PositionPageVM vm = new PositionPageVM();
             DataContext = vm;
+
+            //// Manually set the validation rules
+            //ObservableCollection<IValidationRule> validationRules = new ObservableCollection<IValidationRule>
+            //{
+            //    new MinCharRule(5),
+            //    new SpecialCharRule('@')
+            //};
+
+            //// Apply the validation rules to the TextBox
+            //ValidationRuleUtil.SetValidationRules(tbDescription, validationRules);
         }
     }
 }

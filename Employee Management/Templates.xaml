@@ -15,8 +15,20 @@
         <Color x:Key="HoverColor2">#FF637180</Color> 
 
         <SolidColorBrush x:Key="FontColor1" Color="White"/>
+        
+        <!--ErrorTemplate-->
+        <ControlTemplate x:Key="errorTemplate">
+            <Border BorderBrush="OrangeRed" BorderThickness="2">
+                <Grid>
+                    <AdornedElementPlaceholder/>
+                    <TextBlock Text="{Binding [0].ErrorContent}" Foreground="OrangeRed"
+                               VerticalAlignment="Center" HorizontalAlignment="Right"
+                               Margin="0,0,4,0"/>
+                </Grid>
+            </Border>
+        </ControlTemplate>
 
-        <!--Default Button-->
+    <!--Default Button-->
         <Style x:Key="DefaultButtonStyle" TargetType="{x:Type Button}">
                 <Setter Property="Background" Value="{StaticResource BackgroundColor2}"/>
                 <Setter Property="Padding" Value="3"/>

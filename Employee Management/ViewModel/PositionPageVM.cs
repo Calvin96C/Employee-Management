@@ -2,6 +2,7 @@
 using Employee_Management.Model;
 using Employee_Management.MVVM;
 using Employee_Management.Utils;
+using Employee_Management.Validations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,7 +31,8 @@ namespace Employee_Management.ViewModel
         #endregion
 
         #region Properties
-                public string? TbText
+        public ObservableCollection<IValidationRule> ValidationRules { get; set; }
+        public string? TbText
                 {
                     get { return _tbText; }
                     set
@@ -69,6 +71,7 @@ namespace Employee_Management.ViewModel
         public PositionPageVM()
         {
             _tableStructure = new SQLiteUtil.TableStructure("positions");
+
             LoadData();
         }
         #endregion
