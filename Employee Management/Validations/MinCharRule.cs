@@ -17,7 +17,6 @@ namespace Employee_Management.Validations
 
         public MinCharRule()
         {
-            
         }
         public MinCharRule(int minimumCharacters)
         {

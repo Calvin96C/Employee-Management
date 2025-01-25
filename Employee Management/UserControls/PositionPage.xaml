@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Employee_Management.UserControls" 
              xmlns:viewmodel="clr-namespace:Employee_Management.ViewModel"
              xmlns:validation="clr-namespace:Employee_Management.Validations"
+             xmlns:calvin="clr-namespace:Employee_Management"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -16,26 +17,27 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
-            <!--<TextBox x:Name="tbDescription"
+            <TextBox x:Name="tbDescription"
                      Validation.ErrorTemplate="{StaticResource errorTemplate}"
                      Text="{Binding TbText, UpdateSourceTrigger=PropertyChanged}"
+                     validation:ValidationRuleUtil.ValidationRules="{Binding ValidationRules}"
                      Width="400" FontSize="16"
                      VerticalContentAlignment="Center">
-            </TextBox>-->
+            </TextBox>
 
-            <TextBox x:Name="tbDescription"
+            <!--<TextBox x:Name="tbDescription"
                  Validation.ErrorTemplate="{StaticResource errorTemplate}"
                  Width="400" FontSize="16"
                  VerticalContentAlignment="Center">
                 <TextBox.Text>
                     <Binding Path="TbText" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
-                            <!--<validation:AgeRangeRule Min="5" Max="15"/>-->
-                            <validation:EmptyTextRule CheckWhiteSpace="True"/>
+                            <validation:AgeRangeRule Min="5" Max="15"/>
+                            --><!--<validation:EmptyTextRule CheckWhiteSpace="True"/>--><!--
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
-            </TextBox>
+            </TextBox>-->
 
 
             <Button Content="Update" 

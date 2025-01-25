@@ -56,7 +56,6 @@ namespace Employee_Management.Validations
         // Handle the TextChanged event
         private static void OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            Debug.WriteLine("Test");
 
             if (sender is TextBox textBox)
             {

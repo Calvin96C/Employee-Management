@@ -31,6 +31,7 @@ namespace Employee_Management.ViewModel
         #endregion
 
         #region Properties
+        public ObservableCollection<IValidationRule> ValidationRules { get; set; }
         public string? TbText
                 {
                     get { return _tbText; }
@@ -40,27 +41,26 @@ namespace Employee_Management.ViewModel
                         OnPropertyChanged(nameof(TbText));
                     }
                 }
-                public ObservableCollection<Position> Positions
-		        {
-			        get { return _positions!; }
-			        set 
-                    { 
-                        _positions = value;
-                        OnPropertyChanged(nameof(Positions));
-                    }
-                }
-
-                public Position SelectedPosition
-                {
-                    get => _selectedPosition;
-                    set
-                    {
-                        _selectedPosition = value;
-                        OnPropertyChanged(nameof(SelectedPosition));
-                        TbText = value.PositionDescription;
-                    }
-                }
-                #endregion
+        public ObservableCollection<Position> Positions
+		{
+			get { return _positions!; }
+			set 
+            { 
+                _positions = value;
+                OnPropertyChanged(nameof(Positions));
+            }
+        }
+        public Position SelectedPosition
+        {
+            get => _selectedPosition;
+            set
+            {
+                _selectedPosition = value;
+                OnPropertyChanged(nameof(SelectedPosition));
+                TbText = value.PositionDescription;
+            }
+        }
+        #endregion
 
         #region Relay Commands
         public RelayCommand UpdateCommand => new RelayCommand(execute => UpdateEntry(), canExecute => { return true; });
@@ -71,6 +71,11 @@ namespace Employee_Management.ViewModel
         {
             _tableStructure = new SQLiteUtil.TableStructure("positions");
             LoadData();
+            ValidationRules = new ObservableCollection<IValidationRule>
+            {
+                //new MinCharRule(5),
+                new EmptyTextRule(true)
+            };
         }
         #endregion
 

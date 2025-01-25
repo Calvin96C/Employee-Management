@@ -11,25 +11,30 @@ namespace Employee_Management.Validations
     /// <summary>
     /// This rule will check for an empty string with the option to check for white space.
     /// </summary>
-    public class EmptyTextRule : ValidationRule
+    public class EmptyTextRule : IValidationRule
     {
         public bool CheckWhiteSpace { get; set; }
-        //public EmptyTextRule(bool checkWhiteSpace)
-        //{
-        //    this.CheckWhiteSpace = checkWhiteSpace;
-        //}
-        //public ValidationResult Validate(string value, CultureInfo cultureInfo)
+
+        public EmptyTextRule()
+        {
+        }
+        public EmptyTextRule(bool checkWhiteSpace)
+        {
+            this.CheckWhiteSpace= checkWhiteSpace;
+        }
+
+        //public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         //{
         //    if (CheckWhiteSpace)
         //    {
-        //        if (string.IsNullOrWhiteSpace(value))
+        //        if (string.IsNullOrWhiteSpace(value as string))
         //        {
-        //            return new ValidationResult(false, "Input cannot be empty or empty spaces only.");
+        //            return new ValidationResult(false, "Input cannot be empty nor empty spaces.");
         //        }
         //    }
         //    else
         //    {
-        //        if (string.IsNullOrEmpty(value))
+        //        if (string.IsNullOrEmpty(value as string))
         //        {
         //            return new ValidationResult(false, "Input cannot be empty.");
         //        }
@@ -37,7 +42,7 @@ namespace Employee_Management.Validations
         //    return ValidationResult.ValidResult;
         //}
 
-        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+        public ValidationResult Validate(string value, CultureInfo cultureInfo)
         {
             if (CheckWhiteSpace)
             {
